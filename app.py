@@ -74,8 +74,6 @@ if st.session_state.api_key_valid:
     )
 
     # Tampilkan Form Generate Artikel
-    
-    url_blog = st.text_input('Alamat Blog anda (http:// atau https://)')
     judul_artikel = st.text_input('Judul Artikel')
     gaya_bahasa = st.radio("Gaya Bahasa",
                              ["Informatif", "Naratif", "Kasual","Formal","Kreatif"],
