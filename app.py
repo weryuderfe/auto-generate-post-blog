@@ -42,7 +42,8 @@ if 'api_key_valid' not in st.session_state:
     st.session_state.api_key_valid = False
 if 'api_key' not in st.session_state:
     st.session_state.api_key = ""
-
+st.title('Generate Artikel')
+st.subheader("Buat Artikel Mudah dengan AI")
 with st.sidebar:
     st.title("Auto Generate Artikel")
     st.subheader('by gudanginformatika.com')
@@ -56,7 +57,7 @@ with st.sidebar:
                 st.success('API Key valid!')
             else:
                 st.error('API Key tidak valid')
-
+    
 if st.session_state.api_key_valid:
     genai.configure(api_key=st.session_state.api_key)
     generation_config = {
@@ -73,18 +74,23 @@ if st.session_state.api_key_valid:
     )
 
     # Tampilkan Form Generate Artikel
-    st.title('Generate Artikel')
-    st.subheader("Isi Url dibawah untuk generate")
+    
     url_blog = st.text_input('Alamat Blog anda (http:// atau https://)')
-    url_artikel_1 = st.text_input('Link Artikel referensi 1')
-    url_artikel_2 = st.text_input('Link Artikel referensi 2')
-    url_artikel_3 = st.text_input('Link Artikel referensi 3')
-    num_len = st.slider("Length of Words", min_value=250, max_value=1000, step=250)
+    judul_artikel = st.text_input('Judul Artikel')
+    gaya_bahasa = st.radio("Gaya Bahasa",
+                             ["Informatif", "Naratif", "Kasual","Formal","Kreatif"],
+                             captions=["Memberikan informasi yang akurat dan bermanfaat kepada pembaca",
+                                       "Menceritakan sebuah kisah yang menarik dan engaging bagi pembaca.",
+                                       "Meyakinkan pembaca untuk mengambil tindakan tertentu, seperti membeli produk, mendaftar newsletter, atau mendukung suatu opini.",
+                                       "Menciptakan suasana yang santai dan bersahabat dengan pembaca.",
+                                       "Menyampaikan informasi yang serius dan kredibel kepada pembaca.",
+                                       "Menyampaikan informasi dengan cara yang unik dan imajinatif."])
+    num_len = st.slider("Length of Words", min_value=500, max_value=2000, step=100)
 
-    input_prompt = [
-        f"anda adalah seorang seo spesialis, anda sudah berpengalaman dalam membuat artikel seo yang gampang di index mesin pencarian. hasil penulisan anda memiliki daya tarik yang tinggi untuk setiap pembaca. saya ingin anda membantu saya untuk membantu saya dalam membuat artikel di blog saya yang beralamat di gudanginformatika.com, blog saya berfokus pada niche atau topik teknologi, gadget. nantinya saya akan memberikan link artikel sebagai referensi anda untuk menulis artikel blog. tugas anda adalah membuat judul yang di modifikasi sesuai teknik seo judul tidak boleh sama dengan judul artikel yang menjadi referensi, selanjutnya anda menuliskan artikel blog dengan referensi link yang saya berikan. usahakan tidak sama agar tidak terindikasi artikel plagiat dan link asli tidak di tampilkan. artikel harus \"{num_len} kata. Link 1 :\"{url_artikel_1}\"Link 2 :\"{url_artikel_2}\"Link 3 :\"{url_artikel_3}\". buatkan juga inbound link di awal isi artikel \"{url_blog}\"- [teruskan isi artikel]"
-    ]
+    input_prompt = f"""
+    Anda adalah seorang SEO spesialis dengan pengalaman dalam membuat artikel SEO yang mudah diindeks mesin pencari dan menarik bagi pembaca. Tugas Anda adalah membuat artikel blog dengan judul artikel yang harus Anda buat adalah {judul_artikel}. Jika judul ini tidak berstandar SEO, modifikasi judulnya sesuai teknik SEO untuk memastikan optimalisasi mesin pencari. Selanjutnya, tulis artikel blog dengan judul yang telah diberikan. Gunakan gaya penulisan {gaya_bahasa} untuk memastikan daya tarik yang tinggi. Artikel harus memiliki jumlah kata {num_len}. Pastikan artikel relevan, informatif, dan sesuai dengan standar SEO untuk memaksimalkan visibilitas di mesin pencari.
+    """
 
-    if st.button('Generate Blog'):
+    if st.button('Generate Artikel'):
         response = model.generate_content(input_prompt)
         st.write(response.text)
