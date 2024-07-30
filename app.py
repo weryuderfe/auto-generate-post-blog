@@ -34,8 +34,19 @@ def get_keyword_suggestions(topic, api_key):
     return [keyword.strip() for keyword in response.text.split(',') if keyword.strip()]
 
 # Set page config
-st.set_page_config(layout='wide')
-
+st.set_page_config(page_title='Auto Generate Artikel',
+                   page_icon='./favicon.png', 
+                   layout='wide',
+                   )
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            .css-1rs6os {visibility: hidden;}  /* Hide GitHub icon */
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 # Initialize session state for API key
 if 'api_key_valid' not in st.session_state:
     st.session_state.api_key_valid = False
