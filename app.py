@@ -38,7 +38,6 @@ st.set_page_config(page_title='Auto Generate Artikel',
                    page_icon='./favicon.png', 
                    layout='wide',
                    )
-                   
 # Initialize session state for API key
 if 'api_key_valid' not in st.session_state:
     st.session_state.api_key_valid = False
